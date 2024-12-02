@@ -14,12 +14,12 @@ void sort(int *list, int N)
             }
 }
 
-int compareList(int *list, int *list2, int size)
+int compareList(int *list, int *list2)
 {
     int result = 0;
 
     // for (; *list; list++, list2++)
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < 5; i++)
     {
         result += abs(list[i] - list2[i]);
         // result += abs(*list - *list2);
@@ -34,48 +34,40 @@ int main(void)
 
     int *buffer = NULL;
     int *buffer2 = NULL;
-    char *number = NULL;
     int size = 0;
     int size2 = 0;
-    int n = 0;
+
+    int cmp = 0;
 
     while ((c = getchar()) != EOF)
     {
-        if (c == ' ')
+        size = 0;
+        for (; c != ' '; c = getchar())
         {
             buffer = realloc(buffer, (size + 1) * sizeof(int));
-            *(buffer + size) = atoi(number);
+            *(buffer + size) = c - '0';
             size++;
-            n = 0;
-            free(number);
-            number = NULL;
         }
 
-        else if (c == '\n')
+        size2 = 0;
+        for (c = getchar(); c != '\n' && c != EOF; c = getchar())
         {
             buffer2 = realloc(buffer2, (size2 + 1) * sizeof(int));
-            *(buffer2 + size2) = atoi(number);
+            *(buffer2 + size2) = c - '0';
             size2++;
-            n = 0;
-            free(number);
-            number = NULL;
         }
-        else
-        {
-            number = realloc(number, (n + 1) * sizeof(char));
-            *(number + n) = c;
-            n++;
-        }
+        sort(buffer, 5);
+        sort(buffer2, 5);
+
+        total += compareList(buffer, buffer2);
+        printf("%i ", compareList(buffer, buffer2));
+
+        free(buffer);
+        free(buffer2);
+        buffer = buffer2 = NULL;
+        cmp += 1;
     }
 
-    sort(buffer, size);
-    sort(buffer2, size2);
-    total += compareList(buffer, buffer2, size);
-    free(number);
-    free(buffer);
-    free(buffer2);
-
-    printf("\n%i", total);
-    // reponse après test : 1879048
+    printf("%i %i", total, cmp);
     return 0;
 }
